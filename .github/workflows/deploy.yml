@@ -35,7 +35,7 @@ jobs:
           echo "${{ secrets.EC2_PRIVATE_KEY }}" > private_key.pem
           chmod 600 private_key.pem
 
-          scp -i private_key.pem -r * $ubuntu@$EC2_HOST:/home/$EC2_USER/pearlthoughts-first-task-hello-world
+          scp -i private_key.pem -r * $ubuntu@$EC2_HOST:/home/$EC2_USERNAME/pearlthoughts-first-task-hello-world
 
           ssh -i private_key.pem $ubuntu@$EC2_HOST << 'EOF'
             cd /home/$ubuntu/pearlthoughts-first-task-hello-world
