@@ -35,6 +35,9 @@ jobs:
           echo "${{ secrets.EC2_PRIVATE_KEY }}" > private_key.pem
           chmod 600 private_key.pem
 
+          ssh-keyscan -H $REMOTE_HOST >> ~/.ssh/known_hosts
+          cat ~/.ssh/known_hosts
+
           scp -i private_key.pem -r * $REMOTE_USER@$REMOTE_HOST:/home/$REMOTE_USER/pearlthoughts-first-task-hello-world
 
           ssh -i private_key.pem $REMOTE_USER@$REMOTE_HOST << 'EOF'
