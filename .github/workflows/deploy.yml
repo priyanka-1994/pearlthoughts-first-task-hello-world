@@ -27,12 +27,14 @@ jobs:
       - name: Deploy to EC2
         uses: easingthemes/ssh-deploy@v2
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          REMOTE_HOST: ${{ secrets.EC2_HOST }}
+          REMOTE_USER: ${{ secrets.EC2_USERNAME }}
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
+          REMOTE_PORT: 22
+
           script: |
             cd pearlthoughts-first-task-hello-world
-            git pull origin main
+            git pull origin master
             npm install --production
             npm run build
             pm2 restart hello-world
