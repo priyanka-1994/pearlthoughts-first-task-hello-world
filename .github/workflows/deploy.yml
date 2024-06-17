@@ -24,6 +24,11 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Prepare SSH
+        run: |
+          mkdir -p ~/.ssh
+          touch ~/.ssh/known_hosts
+
       - name: Deploy to EC2
         env:
           REMOTE_HOST: ${{ secrets.EC2_HOST }}
