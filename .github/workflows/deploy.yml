@@ -33,6 +33,7 @@ jobs:
           REMOTE_PORT: 22
           SOURCE: "."
           TARGET: "/home/ubuntu/pearlthoughts-first-task-hello-world"
+          ARGS: "-avz --delete"
           script: |
             cd pearlthoughts-first-task-hello-world
             git pull origin master
