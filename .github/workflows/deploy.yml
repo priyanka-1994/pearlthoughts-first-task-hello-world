@@ -25,19 +25,22 @@ jobs:
         run: npm run build
 
       - name: Deploy to EC2
-        uses: easingthemes/ssh-deploy@v2
-        with:
+        env:
           REMOTE_HOST: ${{ secrets.EC2_HOST }}
           REMOTE_USER: ${{ secrets.EC2_USERNAME }}
           SSH_PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
           REMOTE_PORT: 22
-          SOURCE: "."
-          TARGET: "/home/ubuntu/pearlthoughts-first-task-hello-world"
-          ARGS: "-avz --delete"
-          script: |
-            cd pearlthoughts-first-task-hello-world
-            git pull origin master
-            npm install --production
-            npm run build
-            pm2 restart hello-world
+                              
+        run: |
+          echo "${{ secrets.EC2_PRIVATE_KEY }}" > private_key.pem
+          chmod 600 private_key.pem
+
+          scp -i private_key.pem -r * $ubuntu@$EC2_HOST:/home/$EC2_USER/pearlthoughts-first-task-hello-world
+
+          ssh -i private_key.pem $ubuntu@$EC2_HOST << 'EOF'
+            cd /home/$ubuntu/pearlthoughts-first-task-hello-world
+            npm install
+            pm2 stop all || true
+            pm2 start dist/main.js --name "pearlthoughts-first-task-hello-world"
+          EOF
 
