@@ -31,7 +31,8 @@ jobs:
           REMOTE_USER: ${{ secrets.EC2_USERNAME }}
           SSH_PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
           REMOTE_PORT: 22
-
+          SOURCE: "."
+          TARGET: "/home/ubuntu/pearlthoughts-first-task-hello-world"
           script: |
             cd pearlthoughts-first-task-hello-world
             git pull origin master
