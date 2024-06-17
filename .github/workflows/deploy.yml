@@ -1,29 +1,39 @@
-name: Deploy to AWS
+name: Deploy to EC2
 
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Install dependencies
-      run: npm install
+      - name: Install Node.js and npm
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
 
-    - name: Build NestJS Application
-      run: npm run build
+      - name: Install dependencies
+        run: npm install
 
-    - name: Deploy to EC2 instance
-      run: |
-        scp -o StrictHostKeyChecking=no -r ./dist ubuntu@${{ secrets.EC2_PUBLIC_IP }}:/home/ubuntu/hello-world-app/dist
-        ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_PUBLIC_IP }} 'cd /home/ubuntu/hello-world-app && npm install --only=production && pm2 start dist/main.js'
+      - name: Build
+        run: npm run build
 
-    - name: Post-deployment cleanup
-      run: |
-        ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_PUBLIC_IP }} 'rm -rf /home/ubuntu/hello-world-app/node_modules'
+      - name: Deploy to EC2
+        uses: easingthemes/ssh-deploy@v2
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          script: |
+            cd pearlthoughts-first-task-hello-world
+            git pull origin main
+            npm install --production
+            npm run build
+            pm2 restart hello-world
+
