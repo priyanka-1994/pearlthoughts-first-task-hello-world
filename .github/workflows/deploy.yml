@@ -33,7 +33,7 @@ jobs:
           source: "."
           target: "~/pearlthoughts-first-task-hello-world/"
 
-      - name: SSH to EC2 and install Node.js, npm, and PM2
+      - name: SSH to EC2 and install Node.js, npm, and Pm2
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
