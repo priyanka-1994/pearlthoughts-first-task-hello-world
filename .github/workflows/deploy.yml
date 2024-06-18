@@ -24,20 +24,23 @@ jobs:
       - name: Build and Deploy
         run: |
           npm run build  
-          
-      - name: SSH Deploy
-        uses: appleboy/ssh-action@master
+      - name: Deploy to EC2
+        uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "dist/"
+          target: "~/pearlthoughts-first-task-hello-world/"
+       
+      - name: SSH to EC2 and restart application
+         uses: appleboy/ssh-action@master
+         with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519 $EC2_USER@$EC2_HOST << 'EOF'
-               git clone https://github.com/priyanka-1994/pearlthoughts-first-task-hello-world.git
-               cd /home/ubuntu/pearlthoughts-first-task-hello-world
-               npm install 
-               npm audit fix
-               npm run build
-            EOF
-              
-          
+            cd ~/pearlthoughts-first-task-hello-world
+            pm2 restart nest-app || pm2 start dist/main.js --name pearlthoughts-first-task-hello-world
+            
+        
