@@ -34,8 +34,8 @@ jobs:
           target: "~/pearlthoughts-first-task-hello-world/"
        
       - name: SSH to EC2 and restart application
-         uses: appleboy/ssh-action@master
-         with:
+        uses: appleboy/ssh-action@master
+        with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
