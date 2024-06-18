@@ -30,7 +30,7 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "dist/"
+          source: "."
           target: "~/pearlthoughts-first-task-hello-world/"
        
       - name: SSH to EC2 and restart application
@@ -41,6 +41,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd ~/pearlthoughts-first-task-hello-world
-            pm2 restart nest-app || pm2 start dist/main.js --name pearlthoughts-first-task-hello-world
+            pm2 restart pearlthoughts-first-task-hello-world
             
         
