@@ -25,11 +25,6 @@ jobs:
         run: |
           npm run build  
           
-      - name: Setup SSH
-        uses: webfactory/ssh-agent@v0.5.4
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
       - name: SSH Deploy
         uses: appleboy/ssh-action@master
         with:
@@ -37,8 +32,8 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /home/ubuntu/pearlthoughts-first-task-hello-world
             git pull origin master
+            cd /home/ubuntu/pearlthoughts-first-task-hello-world
             npm install --production
             npm run build
               
