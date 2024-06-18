@@ -21,9 +21,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Clear cache
-        run: npm cache clean --force
-
       - name: Build and Deploy
         run: |
           npm run build  
