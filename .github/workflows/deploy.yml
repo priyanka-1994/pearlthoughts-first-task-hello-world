@@ -27,7 +27,6 @@ jobs:
       - name: Build and Deploy
         run: |
           npm run build  
-          pm2 restart all  
 
       - name: SSH Deploy
         uses: appleboy/ssh-action@master
@@ -40,5 +39,4 @@ jobs:
             git pull origin master
             npm install --production
             npm run build
-            pm2 restart all
               
