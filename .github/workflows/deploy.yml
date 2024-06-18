@@ -33,8 +33,9 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /home/ec2-user/your-nest-app
-            git pull origin main
+            cd /home/ubuntu/pearlthoughts-first-task-hello-world
+            git pull origin master
             npm install --production
             npm run build
+            pm2 restart all
               
