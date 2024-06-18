@@ -30,7 +30,7 @@ jobs:
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519 $EC2_USER@$EC2_HOST << 'EOF'
                git clone https://github.com/priyanka-1994/pearlthoughts-first-task-hello-world.git
